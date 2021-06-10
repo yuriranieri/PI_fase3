@@ -8,5 +8,5 @@ app.use(cors());
 app.use(express.json());
 
 app.listen(port, () => {
-    console.log("Rodando...")
+    console.log("servidor Rodando...")
 });
