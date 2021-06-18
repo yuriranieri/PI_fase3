@@ -59,8 +59,4 @@ router.post('/', [
     }
 });
 
-router.get('/', (req, res) => {
-    User.findAll().then(user => res.json(user))
-});
-
 module.exports = router;
