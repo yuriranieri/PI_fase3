@@ -27,27 +27,27 @@ router.post('/', [
             where: { login: req.body.login }
         }).then(user => {
             if (user) {
-                bcrypt.compare(req.body.password, user.password).then(result => {
-                    if (result) {
-                        const token = jwt.sign({
-                            login: user.login
-                        }, process.env.SECRET);
-
-                        console.log("token: ", token)
-                        return res.json({
-                            token: token
-                        });
-                    } else {
-                        console.log("Não encontrou usuário com a senha");
-                        return res.status(400).json({
-                            err: 'Usuário/senha incorretos'
-                        })
-                    }
+                console.log('Já existe usuário com esse login');
+                return res.status(400).json({
+                    err: 'Já existe usuário com esse login'
                 })
             } else {
-                console.log("Não encontrou usuário com o login");
-                return res.status(400).json({
-                    err: 'Usuário/senha incorretos'
+                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                    if (err) {
+                        console.log('Erro ao gerar hash para a senha', err);
+                    } else {
+                        console.log('hash: ', hash);
+
+                        User.create({
+                            login: req.body.login,
+                            password: hash,
+                        }).then(user => res.json({
+                            msg: 'Usuário criado com sucesso!',
+                            user: user.login
+                        })).catch(err => res.status(500).json({
+                            error: err
+                        }))
+                    }
                 })
             }
         }).catch(error => {
@@ -57,10 +57,6 @@ router.post('/', [
             });
         })
     }
-});
-
-router.get('/', (req, res) => {
-    User.findAll().then(user => res.json(user))
 });
 
 module.exports = router;
