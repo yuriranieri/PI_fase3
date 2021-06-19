@@ -37,7 +37,7 @@ const Login = () => {
                     <br/>
                     <Row>
                         <Col sm="12" md={{ size: 6, offset: 3 }}>
-                            <Button color="warning" size="lg" type="submit" value="Entrar">Entrar</Button>
+                            <Button href="./Ranking" color="warning" size="lg" type="submit" value="Entrar">Entrar</Button>
                             <div id="btnCriar">
                                 <Button href="./Register"color="link">Não possuo conta</Button>
                             </div>

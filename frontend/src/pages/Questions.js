@@ -16,12 +16,8 @@ const Questions = () => {
                     <Jumbotron fluid>
                         <Container>
                             <br/>
-                            <h1 className="display-2">Ranking</h1>
-                            <h4>Bem-Vindo(a)!</h4><br/>
-                            <p>Trabalhamos com Agendamento <b>a cada 30 minutos.</b><br/><br/>
-                            Horário de funcionamento: <br/>
-                            <b>Segunda-feira a Sexta-feira</b><br/>
-                            <b>08:00 às 18:00</b><br/></p>
+                            <h1 className="display-2">Questions</h1>
+                            
                         </Container>
                     </Jumbotron>
                     

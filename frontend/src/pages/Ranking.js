@@ -27,7 +27,12 @@ const Ranking = () => {
                     
                     </Col>
                 </Row>
-
+                <Row>
+                        <Col sm="12" md={{ size: 6, offset: 3 }}>
+                            <Button href="./Questions" color="warning" size="lg" type="submit" value="Enviar">Começar</Button>
+                        </Col>    
+                        
+                    </Row> 
 
             </Container>
         </>
