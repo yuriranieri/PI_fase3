@@ -3,16 +3,19 @@ const cors = require('cors');
 
 const app = express();
 const port = 5000;
-const loginRota = require('./controller/loginController');
-const newUserRota = require('./controller/createUserController');
-const ranking = require('./controller/rankingController');
+const loginRouter = require('./controller/loginController');
+const newUserRouter = require('./controller/createUserController');
+const rankingRouter = require('./controller/rankingController');
+const questionsRouter = require('./controller/questionController');
 const auth = require('./auth')
 
 app.use(cors());
 app.use(express.json());
-app.use('/login', loginRota);
-app.use('/register', newUserRota);
-app.use('/ranking', auth, ranking);
+app.use('/login', loginRouter);
+app.use('/register', newUserRouter);
+app.use(auth) // a partir daqui precisa do token de autenticacao
+app.use('/ranking', rankingRouter);
+app.use('/question', questionsRouter);
 
 app.listen(port, () => {
 	console.log(`Server is running on port: ${port}`);
