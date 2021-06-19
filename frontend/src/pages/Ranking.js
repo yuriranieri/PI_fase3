@@ -3,7 +3,7 @@ import logo from "../img/logo.png"
 import { Button, Jumbotron, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
 
 
-const Home = () => {
+const Ranking = () => {
 
     return (
         <>
@@ -35,4 +35,4 @@ const Home = () => {
 
 }
 
-export default Home
+export default Ranking
