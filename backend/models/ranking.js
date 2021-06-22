@@ -6,9 +6,9 @@ const Ranking = db.define('partida', {
     pontuacao: DataTypes.INTEGER
 });
 
-Ranking.belongsTo(User, {
+Ranking.hasMany(User, {
     foreignKey: {
-        name: 'id_usuario'
+        name: 'id_ranking'
     }
 });
 
