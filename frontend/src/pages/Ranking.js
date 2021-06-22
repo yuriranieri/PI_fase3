@@ -3,7 +3,7 @@ import logo from "../img/logo.png"
 import { Button, Jumbotron, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
 
 
-const Home = () => {
+const Ranking = () => {
 
     return (
         <>
@@ -27,7 +27,12 @@ const Home = () => {
                     
                     </Col>
                 </Row>
-
+                <Row>
+                        <Col sm="12" md={{ size: 6, offset: 3 }}>
+                            <Button href="./Questions" color="warning" size="lg" type="submit" value="Enviar">Começar</Button>
+                        </Col>    
+                        
+                    </Row> 
 
             </Container>
         </>
@@ -35,4 +40,4 @@ const Home = () => {
 
 }
 
-export default Home
+export default Ranking

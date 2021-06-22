@@ -35,7 +35,7 @@ const Register = () => {
                     <br/>
                     <Row>
                         <Col sm="12" md={{ size: 6, offset: 3 }}>
-                            <Button color="warning" size="lg" type="submit" value="Enviar">Enviar</Button>
+                            <Button href="./" color="warning" size="lg" type="submit" value="Enviar">Criar</Button>
                         </Col>    
                         
                     </Row> 
