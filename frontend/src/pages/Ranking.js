@@ -1,8 +1,44 @@
 import React from 'react'
-import logo from "../img/logo.png"
-import { Button, Jumbotron, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
+
+class Ranking extends React.Component{
+    constructor(props){
+    super(props)
+
+        this.state = {
+            user: [],
+            pontuacao: []
+        }
+    }
+
+    componentDidMount(){
+        fetch(`http://localhost:5000/ranking`)
+        .then(user =>
+            user.json().then(user => this.setState({user}))
+            )
+    }
+
+    render(){
+        const {user} = this.state;
+
+        return user.map((user, index) => (
+            <div className="usuario-list">
+                <div key={index}>
+                    <br></br>
+                    <strong>{user.usuario.login}</strong><br></br>
+                    <strong>{user.pontuacao}</strong>
+                </div>
+            </div>
+        ))
+        
+    }
 
 
+}// fim da classe Ranking
+
+export default Ranking
+    
+
+/*
 const Ranking = () => {
 
     return (
@@ -40,4 +76,4 @@ const Ranking = () => {
 
 }
 
-export default Ranking
+export default Ranking*/
