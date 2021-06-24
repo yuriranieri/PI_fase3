@@ -11,52 +11,54 @@ router.post('/', [
         .trim().escape().notEmpty(),
     check('password', "Senha é um campo obrigatório")
         .trim().escape().notEmpty()
-], (req, res) => {
-    const erros = validationResult(req);
+], async (req, res) => {
+    try {
+        const erros = validationResult(req);
 
-    const contextoErros = {
-        erros: erros.array(),
-    };
+        const contextoErros = {
+            erros: erros.array(),
+        };
 
-    console.log(erros);
+        console.log(erros);
 
-    if (!erros.isEmpty() || contextoErros.erros.length > 0) {
-        return res.status(422).json(contextoErros);
-    } else {
-        User.findOne({
-            where: { login: req.body.login }
-        }).then(user => {
-            if (user) {
-                bcrypt.compare(req.body.password, user.password).then(result => {
-                    if (result) {
-                        const token = jwt.sign({
-                            id: user.id,
-                            login: user.login
-                        }, process.env.SECRET);
+        if (!erros.isEmpty() || contextoErros.erros.length > 0) {
+            return res.status(422).json(contextoErros);
+        } else {
+            const user = await User.findOne({
+                where: { login: req.body.login }
+            });
 
-                        console.log("token: ", token)
-                        return res.json({
-                            token: token
-                        });
-                    } else {
-                        console.log("Não encontrou usuário com a senha");
-                        return res.status(400).json({
-                            err: 'Usuário/senha incorretos'
-                        })
-                    }
-                })
-            } else {
+            if (!user) {
                 console.log("Não encontrou usuário com o login");
                 return res.status(400).json({
                     err: 'Usuário/senha incorretos'
                 })
             }
-        }).catch(error => {
-            console.log('ERROR:', error);
-            return res.status(500).json({
-                err: error
-            });
-        })
+
+            const result = await bcrypt.compare(req.body.password, user.password);
+
+            if (result) {
+                const token = jwt.sign({
+                    id: user.id,
+                    login: user.login
+                }, process.env.SECRET);
+
+                console.log("token: ", token)
+                return res.json({
+                    token: token
+                });
+            } else {
+                console.log("Não encontrou usuário com a senha");
+                return res.status(400).json({
+                    err: 'Usuário/senha incorretos'
+                })
+            }
+        }
+    } catch (error) {
+        console.log('ERROR:', error);
+        return res.status(500).json({
+            err: error
+        });
     }
 });
 

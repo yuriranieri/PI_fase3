@@ -4,46 +4,47 @@ const User = require('../models/user');
 const Question = require('../models/question');
 const Alternativa = require('../models/alternativa');
 
-router.post('/:questionId/user/:userId', (req, res) => {
-    Question.findOne({
-        where: { id: req.params.questionId },
-        include: { model: Alternativa }
-    }).then(question => {
-        if (question) {
-            if (question.alternativas[0].id != req.body.resposta_usuario
-                && question.alternativas[1].id != req.body.resposta_usuario
-                && question.alternativas[2].id != req.body.resposta_usuario
-                && question.alternativas[3].id != req.body.resposta_usuario) {
-                console.log('resposta usuario não pertence a pergunta', question.id)
-                return res.status(400).json({
-                    err: 'resposta usuario não pertence a essa pergunta'
-                })
-            }
+router.post('/:questionId/user/:userId', async (req, res) => {
+    try {
+        const question = await Question.findOne({
+            where: { id: req.params.questionId },
+            include: { model: Alternativa }
+        });
 
-            UserQuestion.create({
-                id_usuario: req.params.userId,
-                id_questao: req.params.questionId,
-                resposta_usuario: req.body.resposta_usuario
-            }).then(answer => res.json({
-                msg: 'Resposta salva com sucesso criado com sucesso!',
-                id_alternativa_user: answer.resposta_usuario
-            })).catch(err => res.status(500).json({
-                error: err
-            }))
-
-        } else {
+        if (!question) {
             console.log("Questão não encontrada");
             return res.status(400).json({
                 err: 'Questão não encontrada'
+            });
+        }
+        
+        if (question.alternativas[0].id != req.body.resposta_usuario
+            && question.alternativas[1].id != req.body.resposta_usuario
+            && question.alternativas[2].id != req.body.resposta_usuario
+            && question.alternativas[3].id != req.body.resposta_usuario) {
+            console.log('resposta usuario não pertence a pergunta', question.id)
+            return res.status(400).json({
+                err: 'resposta usuario não pertence a essa pergunta'
             })
         }
-    }).catch(error => {
+
+        const answer = await UserQuestion.create({
+            id_usuario: req.params.userId,
+            id_questao: req.params.questionId,
+            resposta_usuario: req.body.resposta_usuario
+        })
+
+        res.json({
+            msg: 'Resposta salva com sucesso criado com sucesso!',
+            id_alternativa_user: answer.resposta_usuario
+        })
+    } catch (error) {
         console.log('ERROR:', error);
         return res.status(500).json({
             err: error
-        });
-    })
-});
+        })
+    }
+})
 
 router.get('/:questionId', (req, res) => {
     Question.findOne({
