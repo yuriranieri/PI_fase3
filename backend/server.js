@@ -7,6 +7,7 @@ const loginRouter = require('./controller/loginController');
 const newUserRouter = require('./controller/createUserController');
 const rankingRouter = require('./controller/rankingController');
 const questionsRouter = require('./controller/questionController');
+const userQuestionRouter = require('./controller/userQuestionController');
 const auth = require('./auth')
 
 app.use(cors());
@@ -15,7 +16,8 @@ app.use('/login', loginRouter);
 app.use('/register', newUserRouter);
 app.use(auth) // a partir daqui precisa do token de autenticacao
 app.use('/ranking', rankingRouter);
-app.use('/question', questionsRouter);
+app.use('/questions', questionsRouter);
+app.use('/partida', userQuestionRouter)
 
 app.listen(port, () => {
 	console.log(`Server is running on port: ${port}`);

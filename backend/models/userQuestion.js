@@ -7,7 +7,7 @@ const Alternativa = require('./alternativa');
 const UserQuestion = db.define('usuario_questao', {
     id_usuario: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
+        // primaryKey: true,
         references: {
             model: User,
             key: 'id'
@@ -15,7 +15,7 @@ const UserQuestion = db.define('usuario_questao', {
     },
     id_questao: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
+        // primaryKey: true,
         references: {
             model: Question,
             key: 'id'
@@ -31,9 +31,9 @@ const UserQuestion = db.define('usuario_questao', {
     }
 });
 
-User.belongsToMany(Question, { through: UsuarioQuestao, foreignKey: 'id_usuario' });
-Question.belongsToMany(User, { through: UsuarioQuestao, foreignKey: 'id_questao' });
-Alternativa.hasOne(UsuarioQuestao, {
+User.belongsToMany(Question, { through: UserQuestion, foreignKey: 'id_usuario' });
+Question.belongsToMany(User, { through: UserQuestion, foreignKey: 'id_questao' });
+Alternativa.hasOne(UserQuestion, {
     foreignKey: 'resposta_usuario'
 });
 
