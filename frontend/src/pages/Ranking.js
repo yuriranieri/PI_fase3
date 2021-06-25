@@ -8,7 +8,7 @@ class Ranking extends React.Component {
         super(props)
 
         this.state = {
-            user: [],
+            usuario: [],
             pontuacao: []
         }
     }
@@ -16,12 +16,12 @@ class Ranking extends React.Component {
     componentDidMount() {
         fetch(`http://localhost:5000/ranking`)
             .then(user =>
-                user.json().then(user => this.setState({ user }))
+                user.json().then(usuario => this.setState({ usuario }))
             )
     }
 
     render() {
-        const { user } = this.state;
+        const { usuario } = this.state;
 
         return (
             <>
@@ -56,16 +56,13 @@ class Ranking extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
+                                            {usuario.map((user, index) => (
                                         <tr>
-                                            <th scope="row">1</th>
-                                            {user.map((user, index) => (
-                                                <div key={index}>
-                                                    <td>{user.usuario.login}</td>
-                                                    <td>{user.pontuacao}</td>
-                                                </div>
-                                            ))}
-
+                                            <th key={index}>{index}</th>
+                                            <td>{user.usuario.login}</td>
+                                            <td>{user.pontuacao}</td>
                                         </tr>
+                                            ))}
                                     </tbody>
 
                                 </Table>
