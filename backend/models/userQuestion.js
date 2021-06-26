@@ -31,10 +31,25 @@ const UserQuestion = db.define('usuario_questao', {
     }
 });
 
-User.belongsToMany(Question, { through: UserQuestion, foreignKey: 'id_usuario' });
-Question.belongsToMany(User, { through: UserQuestion, foreignKey: 'id_questao' });
+User.belongsToMany(Question, {
+    through: UserQuestion,
+    foreignKey: 'id_usuario'
+    // otherKey: 'id_questao'
+});
+Question.belongsToMany(User, {
+    through: UserQuestion,
+    foreignKey: 'id_questao'
+    // otherKey: 'id_usuario'
+});
+
 Alternativa.hasOne(UserQuestion, {
     foreignKey: 'resposta_usuario'
 });
+
+User.hasMany(UserQuestion, { foreignKey: 'id_usuario' });
+UserQuestion.belongsTo(User, { foreignKey: 'id_usuario' });
+
+Question.hasMany(UserQuestion, { foreignKey: 'id_questao' });
+UserQuestion.belongsTo(Question, { foreignKey: 'id_questao' });
 
 module.exports = UserQuestion;
