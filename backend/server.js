@@ -13,8 +13,8 @@ app.use(cors());
 app.use(express.json());
 app.use('/login', loginRouter);
 app.use('/register', newUserRouter);
-app.use(auth) // a partir daqui precisa do token de autenticacao
 app.use('/ranking', rankingRouter);
+app.use(auth) // a partir daqui precisa do token de autenticacao
 app.use('/question', questionsRouter);
 
 app.listen(port, () => {
