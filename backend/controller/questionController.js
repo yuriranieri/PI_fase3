@@ -4,25 +4,33 @@ const Alternativa = require('../models/alternativa');
 const UserQuestion = require('../models/userQuestion');
 const { check, body, validationResult } = require('express-validator');
 
-router.get('/:id', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const question = await Question.findOne({
-            where: { id: req.params.id },
-            attributes: ['enunciado', 'pontuacao'],
+        const questions = await Question.findAll({
+            // where: { id: req.params.id },
+            attributes: ['enunciado'],
             include: {
                 model: Alternativa,
                 attributes: ['id', 'valor_alternativa']
             }
         });
 
-        if (!question) {
+        if (!questions) {
             console.log("questão não encontrada");
             return res.status(400).json({
                 err: 'Questão não encontrada'
             })
         }
 
-        return res.json(question)
+        questions.forEach(question => {
+            console.log('questao', question.enunciado);
+            question.alternativas.forEach(alternativa => {
+                console.log('id: ',alternativa.id)
+                console.log('valor: ',alternativa.valor_alternativa)
+            })
+        })
+
+        return res.json(questions)
     } catch (error) {
         console.log('ERROR:', error);
         return res.status(500).json({

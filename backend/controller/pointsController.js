@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Alternativa = require('../models/alternativa');
 const Question = require('../models/question');
+const Ranking = require('../models/ranking');
 const User = require('../models/user');
 const UserQuestion = require('../models/userQuestion');
 
@@ -31,6 +32,7 @@ router.get('/:userId', async (req, res) => {
         let alternativaCorreta = 0;
         let acertos = 0;
         let erros = 0;
+        
         userAnswers.forEach(answer => {
             alternativaCorreta = answer.questao.alternativas.find(alternativa => alternativa.correta == true).id;
 
@@ -52,7 +54,18 @@ router.get('/:userId', async (req, res) => {
         console.log('user acertou ', acertos, ' e errou ', erros, ' questões, totalizando com ', userPontuacao, 'pontos')
 
         // inserir a pontuação na tabela de ranking
-        return res.json(userAnswers)
+        const newRanking = await Ranking.create({
+            pontuacao: userPontuacao,
+            id_usuario: req.params.userId
+        });
+
+        console.log(newRanking)
+        return res.json({
+            id_usuario: newRanking.id_usuario,
+            pontuacao: newRanking.pontuacao,
+            acertos: acertos,
+            erros: erros
+        })
     } catch (error) {
         console.log('ERROR:', error);
         return res.status(500).json({
