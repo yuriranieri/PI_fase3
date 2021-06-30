@@ -2,13 +2,28 @@ const router = require('express').Router();
 const Alternativa = require('../models/alternativa');
 const Question = require('../models/question');
 const Ranking = require('../models/ranking');
-const User = require('../models/user');
 const UserQuestion = require('../models/userQuestion');
+const jwt = require('jsonwebtoken')
 
-router.get('/:userId', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
+        let token = req.headers['authorization'];
+        const tokenPuro = token.split(' ').pop();
+        let id;
+
+        jwt.verify(tokenPuro, process.env.SECRET, (err, decoded) => {
+            if (err) {
+                return res.status(401).json({
+                    err: 'Accesso negado'
+                });
+            }
+
+            console.log('id user', decoded.id);
+            id = decoded.id;
+        });
+
         const userAnswers = await UserQuestion.findAll({
-            where: { id_usuario: req.params.userId },
+            where: { id_usuario: id },
             include:
             {
                 model: Question,
@@ -32,7 +47,7 @@ router.get('/:userId', async (req, res) => {
         let alternativaCorreta = 0;
         let acertos = 0;
         let erros = 0;
-        
+
         userAnswers.forEach(answer => {
             alternativaCorreta = answer.questao.alternativas.find(alternativa => alternativa.correta == true).id;
 
@@ -56,7 +71,7 @@ router.get('/:userId', async (req, res) => {
         // inserir a pontuação na tabela de ranking
         const newRanking = await Ranking.create({
             pontuacao: userPontuacao,
-            id_usuario: req.params.userId
+            id_usuario: id
         });
 
         console.log(newRanking)
