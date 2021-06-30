@@ -3,11 +3,11 @@ const Question = require('../models/question');
 const Alternativa = require('../models/alternativa');
 const UserQuestion = require('../models/userQuestion');
 const { check, body, validationResult } = require('express-validator');
-const jwt = require('jsonwebtoken')
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const questions = await Question.findAll({
+            where: { id: req.params.id },
             attributes: ['enunciado'],
             include: {
                 model: Alternativa,
@@ -22,14 +22,6 @@ router.get('/', async (req, res) => {
             })
         }
 
-        questions.forEach(question => {
-            console.log('questao', question.enunciado);
-            question.alternativas.forEach(alternativa => {
-                console.log('id: ', alternativa.id)
-                console.log('valor: ', alternativa.valor_alternativa)
-            })
-        })
-
         return res.json(questions)
     } catch (error) {
         console.log('ERROR:', error);
@@ -39,7 +31,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/:questionId', [
+router.post('/:questionId/user/:userId', [
     check('resposta_usuario', "É preciso escolher uma alternativa e responder a pergunta")
         .trim().escape().notEmpty()
 ], async (req, res) => {
@@ -55,21 +47,6 @@ router.post('/:questionId', [
         if (!erros.isEmpty() || contextoErros.erros.length > 0) {
             return res.status(422).json(contextoErros);
         } else {
-            let token = req.headers['authorization'];
-            const tokenPuro = token.split(' ').pop();
-            let id;
-
-            jwt.verify(tokenPuro, process.env.SECRET, (err, decoded) => {
-                if (err) {
-                    return res.status(401).json({
-                        err: 'Accesso negado'
-                    });
-                }
-
-                console.log('id user', decoded.id);
-                id = decoded.id;
-            })
-
             const question = await Question.findOne({
                 where: { id: req.params.questionId },
                 include: { model: Alternativa }
@@ -88,7 +65,7 @@ router.post('/:questionId', [
                 console.log('dentro alternativa id; ', alternativa.id, '\n resp user: ', req.body.resposta_usuario)
                 return alternativa.id == req.body.resposta_usuario;
             });
-
+            
             if (!alternativaUser) {
                 console.log('alternativa escolhida pelo usuario não pertence a pergunta', question.id)
                 return res.status(400).json({
@@ -99,7 +76,7 @@ router.post('/:questionId', [
             console.log('id alternativa: ', alternativaUser.id, '\nvalor: ', alternativaUser.valor_alternativa, '\ncorreta: ', alternativaUser.correta)
 
             const answer = await UserQuestion.create({
-                id_usuario: id,
+                id_usuario: req.params.userId,
                 id_questao: req.params.questionId,
                 resposta_usuario: alternativaUser.id
             });
