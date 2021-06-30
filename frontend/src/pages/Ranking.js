@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Button, Jumbotron, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
+import { Table, Button, Jumbotron, Container, Row, Col, } from 'reactstrap'
 import './Ranking.css'
 import logo from "../img/logo.png"
 import { getToken } from '../utils/auth'
@@ -9,7 +9,7 @@ class Ranking extends React.Component {
         super(props)
 
         this.state = {
-            usuario: [],
+            user: [],
             pontuacao: []
         }
     }
@@ -25,7 +25,7 @@ class Ranking extends React.Component {
 
         fetch(`http://localhost:5000/ranking?orderBy=pontuacao`, options)
             .then(user =>
-                user.json().then(usuario => this.setState({ usuario }))
+                user.json().then(user => this.setState({ user }))
             )
     }
 
