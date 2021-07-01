@@ -1,13 +1,13 @@
 const router = require('express').Router();
-const Question = require('../models/question');
+const QuestionModel = require('../models/question');
 const Alternativa = require('../models/alternativa');
 const UserQuestion = require('../models/userQuestion');
 const { check, body, validationResult } = require('express-validator');
+let arrMap = [];
 
-router.get('/:id', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const questions = await Question.findAll({
-            where: { id: req.params.id },
+        const questions = await QuestionModel.findAll({
             attributes: ['enunciado'],
             include: {
                 model: Alternativa,
@@ -22,7 +22,30 @@ router.get('/:id', async (req, res) => {
             })
         }
 
-        return res.json(questions)
+        questions.forEach(question => {
+            let myMap = new Map();
+            myMap.set("enunciado", question.enunciado)
+            
+            let cont = 0;
+            question.alternativas.forEach(a => {
+                // myMap.set("id_alternativa", a.id)
+                myMap.set(cont++, a.valor_alternativa)
+            })
+            
+            console.log(myMap)
+            arrMap.push(myMap);
+        })
+
+        arrMap.forEach(map => {
+            console.log(map.get("enunciado"))
+            // console.log('id:', map.get("id_alternativa"))
+            console.log('alternativa:', map.get(0))
+            console.log('alternativa:', map.get(1))
+            console.log('alternativa:', map.get(2))
+            console.log('alternativa:', map.get(3))
+        })
+
+        return res.json(JSON.stringify(arrMap))
     } catch (error) {
         console.log('ERROR:', error);
         return res.status(500).json({
@@ -47,7 +70,7 @@ router.post('/:questionId/user/:userId', [
         if (!erros.isEmpty() || contextoErros.erros.length > 0) {
             return res.status(422).json(contextoErros);
         } else {
-            const question = await Question.findOne({
+            const question = await QuestionModel.findOne({
                 where: { id: req.params.questionId },
                 include: { model: Alternativa }
             });
@@ -65,7 +88,7 @@ router.post('/:questionId/user/:userId', [
                 console.log('dentro alternativa id; ', alternativa.id, '\n resp user: ', req.body.resposta_usuario)
                 return alternativa.id == req.body.resposta_usuario;
             });
-            
+
             if (!alternativaUser) {
                 console.log('alternativa escolhida pelo usuario não pertence a pergunta', question.id)
                 return res.status(400).json({
