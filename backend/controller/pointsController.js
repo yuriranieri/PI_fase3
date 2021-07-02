@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     try {
         let token = req.headers['authorization'];
         const tokenPuro = token.split(' ').pop();
-        let id;
+        let userId;
 
         jwt.verify(tokenPuro, process.env.SECRET, (err, decoded) => {
             if (err) {
@@ -18,12 +18,11 @@ router.get('/', async (req, res) => {
                 });
             }
 
-            console.log('id user', decoded.id);
-            id = decoded.id;
+            userId = decoded.id;
         });
 
         const userAnswers = await UserQuestion.findAll({
-            where: { id_usuario: id },
+            where: { id_usuario: userId },
             include:
             {
                 model: Question,
@@ -71,10 +70,9 @@ router.get('/', async (req, res) => {
         // inserir a pontuação na tabela de ranking
         const newRanking = await Ranking.create({
             pontuacao: userPontuacao,
-            id_usuario: id
+            id_usuario: userId
         });
 
-        console.log(newRanking)
         return res.json({
             id_usuario: newRanking.id_usuario,
             pontuacao: newRanking.pontuacao,

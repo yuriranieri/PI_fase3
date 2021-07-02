@@ -1,14 +1,15 @@
 const router = require('express').Router();
-const QuestionModel = require('../models/question');
+const Question = require('../models/question');
 const Alternativa = require('../models/alternativa');
 const UserQuestion = require('../models/userQuestion');
 const { check, body, validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken')
 let arrMap = [];
 
 router.get('/', async (req, res) => {
     try {
-        const questions = await QuestionModel.findAll({
-            attributes: ['enunciado'],
+        const questions = await Question.findAll({
+            attributes: ['id', 'enunciado'],
             include: {
                 model: Alternativa,
                 attributes: ['id', 'valor_alternativa']
@@ -24,28 +25,32 @@ router.get('/', async (req, res) => {
 
         questions.forEach(question => {
             let myMap = new Map();
+
+            myMap.set("id", question.id)
             myMap.set("enunciado", question.enunciado)
-            
+
             let cont = 0;
-            question.alternativas.forEach(a => {
-                // myMap.set("id_alternativa", a.id)
-                myMap.set(cont++, a.valor_alternativa)
+            question.alternativas.forEach(alternativa => {
+                myMap.set(cont++, alternativa.valor_alternativa)
             })
-            
+
             console.log(myMap)
             arrMap.push(myMap);
         })
 
-        arrMap.forEach(map => {
-            console.log(map.get("enunciado"))
-            // console.log('id:', map.get("id_alternativa"))
-            console.log('alternativa:', map.get(0))
-            console.log('alternativa:', map.get(1))
-            console.log('alternativa:', map.get(2))
-            console.log('alternativa:', map.get(3))
-        })
+        let newArr = []
+        for (let map of arrMap) {
+            let obj = Array.from(map).reduce((obj, [key, value]) => (
+                Object.assign(obj, { [key]: value })
+            ), {})
+            console.log('obj: ', obj)
+            newArr.push(obj)
+        }
+        console.log('array de obj: ', newArr);
 
-        return res.json(JSON.stringify(arrMap))
+        return res.json({
+            "questions": newArr
+        })
     } catch (error) {
         console.log('ERROR:', error);
         return res.status(500).json({
@@ -54,7 +59,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/:questionId/user/:userId', [
+router.post('/:questionId', [
     check('resposta_usuario', "É preciso escolher uma alternativa e responder a pergunta")
         .trim().escape().notEmpty()
 ], async (req, res) => {
@@ -70,7 +75,22 @@ router.post('/:questionId/user/:userId', [
         if (!erros.isEmpty() || contextoErros.erros.length > 0) {
             return res.status(422).json(contextoErros);
         } else {
-            const question = await QuestionModel.findOne({
+            let token = req.headers['authorization'];
+            const tokenPuro = token.split(' ').pop();
+            let userId;
+
+            jwt.verify(tokenPuro, process.env.SECRET, (err, decoded) => {
+                if (err) {
+                    return res.status(401).json({
+                        err: 'Accesso negado'
+                    });
+                }
+
+                console.log('id user', decoded.id);
+                userId = decoded.id;
+            });
+
+            const question = await Question.findOne({
                 where: { id: req.params.questionId },
                 include: { model: Alternativa }
             });
@@ -85,8 +105,8 @@ router.post('/:questionId/user/:userId', [
             console.log('resposta user: ', req.body.resposta_usuario)
 
             const alternativaUser = question.alternativas.find(alternativa => {
-                console.log('dentro alternativa id; ', alternativa.id, '\n resp user: ', req.body.resposta_usuario)
-                return alternativa.id == req.body.resposta_usuario;
+                console.log('dentro alternativa id; ', alternativa.valor_alternativa, '\n resp user: ', req.body.resposta_usuario)
+                return alternativa.valor_alternativa == req.body.resposta_usuario;
             });
 
             if (!alternativaUser) {
@@ -99,7 +119,7 @@ router.post('/:questionId/user/:userId', [
             console.log('id alternativa: ', alternativaUser.id, '\nvalor: ', alternativaUser.valor_alternativa, '\ncorreta: ', alternativaUser.correta)
 
             const answer = await UserQuestion.create({
-                id_usuario: req.params.userId,
+                id_usuario: userId,
                 id_questao: req.params.questionId,
                 resposta_usuario: alternativaUser.id
             });
