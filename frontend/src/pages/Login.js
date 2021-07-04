@@ -36,10 +36,10 @@ async handleSubmit(e) {
     try {
         const response = await api.post("/login", {login, password})
         const token = response.data.token
-        // window.localStorage.setItem( 'wait-token', token)
+        
         loginf(token)
         console.log(loginf.TOKEN_KEY)
-        // window.localStorage.getItem( token)
+
 
         // console.log(response)
         // console.log(response.data.token)
