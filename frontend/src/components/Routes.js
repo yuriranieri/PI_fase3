@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Router, Switch, Route, Redirect, BrowserRouter } from 'react-router-dom'
+import {Switch, Route, Redirect, BrowserRouter } from 'react-router-dom'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Ranking from '../pages/Ranking'

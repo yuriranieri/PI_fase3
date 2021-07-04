@@ -8,11 +8,6 @@ export const loginf = (token) => {
     localStorage.setItem(TOKEN_KEY, token);
 }
 
-export const logout = () => {
-    localStorage.removeItem(TOKEN_KEY);
-    window.location.href ='/';
-}
-
 export const isAuth = () => {
     return getToken() !== null;
 }

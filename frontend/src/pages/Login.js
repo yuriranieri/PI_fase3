@@ -2,8 +2,6 @@ import React from 'react'
 import logo from "../img/logo.png"
 import { Button, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
 import api from '../services/api';
-import {Redirect} from 'react-router-dom';
-import {history} from '.././history';
 import {loginf}  from '../utils/auth';
 
 
