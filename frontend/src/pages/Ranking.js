@@ -48,7 +48,7 @@ class Ranking extends React.Component {
                         </Col>
                         <Col md="4">
                             <br />
-                            <Button className="jogar" color="warning" size="lg">Jogar</Button>
+                            <Button href="./question/1" className="jogar" color="warning" size="lg">Jogar</Button>
                         </Col>
                     </Row>
                 </header>
