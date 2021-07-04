@@ -1,24 +1,34 @@
 import React from 'react'
 
-import { Router, Switch, Route } from 'react-router'
+import { Router, Switch, Route, Redirect, BrowserRouter } from 'react-router-dom'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Ranking from '../pages/Ranking'
 import Questions from '../pages/Questions'
 import NotFound from './NotFound'
 
-import {history} from '../history'
+import { isAuth } from '../utils/auth'
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+        isAuth() ? (
+            <Component {...props} />
+        ) : (
+            <Redirect to={{pathname: '/', state: { from: props.location }  }} />
+        )
+    )}/>
+)
 
 const Routes = () => (
-    <Router history={history}>
+    <BrowserRouter>
         <Switch>
-            <Route component={Login} exact path="/"/>
-            <Route component={Register} exact path="/register"/>
-            <Route component={Ranking} exact path="/ranking"/>
-            <Route component={Questions} exact path="/questions"/>
+            <Route exact path="/" component={Login}/>
+            <Route exact path="/register" component={Register} />
+            <PrivateRoute path="/ranking" component={Ranking} />
+            <PrivateRoute path="/questions" component={Questions} />
             <Route component={NotFound} />
         </Switch>
-    </Router>
+    </BrowserRouter>
 )
 
 export default Routes

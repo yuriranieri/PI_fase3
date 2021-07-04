@@ -4,11 +4,7 @@ import './App.css'
 
 import Routes from '../components/Routes'
 
-const App = () => ( //Renderizar Rotas
-    <main className="App">
-        <Routes/>
-    </main>
-)
+const App = () => <Routes />;
 
 
 export default App
