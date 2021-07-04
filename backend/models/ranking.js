@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const db = require("../db");
 const User = require('./user');
 
-const Ranking = db.define('partida', {
+const Ranking = db.define('ranking', {
     pontuacao: DataTypes.INTEGER
 });
 
