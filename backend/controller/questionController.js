@@ -4,37 +4,10 @@ const Alternativa = require('../models/alternativa');
 const UserQuestion = require('../models/userQuestion');
 const { check, body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken')
-let arrMap = [];
-
-router.get('/id/:id', async (req, res) => {
-    try {
-        const questions = await Question.findAll({
-            where: { id: req.params.id },
-            attributes: ['enunciado'],
-            include: {
-                model: Alternativa,
-                attributes: ['id', 'valor_alternativa']
-            }
-        });
-
-        if (!questions) {
-            console.log("questão não encontrada");
-            return res.status(400).json({
-                err: 'Questão não encontrada'
-            })
-        }
-
-        return res.json(questions)
-    } catch (error) {
-        console.log('ERROR:', error);
-        return res.status(500).json({
-            err: error
-        });
-    }
-});
 
 router.get('/', async (req, res) => {
     try {
+        let arrMap = [];
         const questions = await Question.findAll({
             attributes: ['id', 'enunciado'],
             include: {
