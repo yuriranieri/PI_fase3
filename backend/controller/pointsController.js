@@ -23,6 +23,10 @@ router.get('/', async (req, res) => {
 
         const userAnswers = await UserQuestion.findAll({
             where: { id_usuario: userId },
+            order: [
+                ['id', 'DESC']
+            ],
+            limit: [10],
             include:
             {
                 model: Question,
@@ -34,6 +38,7 @@ router.get('/', async (req, res) => {
             }
         });
 
+        console.log(userAnswers)
         console.log(userAnswers.length)
         if (userAnswers.length == 0) {
             console.log("questão não encontrada");
