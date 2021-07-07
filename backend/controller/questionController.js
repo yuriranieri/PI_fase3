@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 router.get('/', async (req, res) => {
     try {
-        let arrMap = [];
+        let arrQuestions = [];
         const questions = await Question.findAll({
             attributes: ['id', 'enunciado'],
             include: {
@@ -24,32 +24,26 @@ router.get('/', async (req, res) => {
         }
 
         questions.forEach(question => {
-            let myMap = new Map();
-
-            myMap.set("id", question.id)
-            myMap.set("enunciado", question.enunciado)
+            let obj = {
+                id: question.id,
+                enunciado: question.enunciado,
+                alternativas: [{}, {}, {}, {}]
+            }
 
             let cont = 0;
             question.alternativas.forEach(alternativa => {
-                myMap.set(cont++, alternativa.valor_alternativa)
+                obj.alternativas[cont] = {
+                    id: alternativa.id,
+                    valor: alternativa.valor_alternativa
+                }
+                cont++
             })
-
-            console.log(myMap)
-            arrMap.push(myMap);
+            
+            console.log(obj)
+            arrQuestions.push(obj);
         })
 
-        let newArr = []
-        for (let map of arrMap) {
-            let obj = Array.from(map).reduce((obj, [key, value]) => (
-                Object.assign(obj, { [key]: value })
-            ), {})
-            console.log('obj: ', obj)
-            newArr.push(obj)
-        }
-        console.log('array de obj: ', newArr);
-
-        return res.json(newArr)
-        
+        return res.json(arrQuestions)
     } catch (error) {
         console.log('ERROR:', error);
         return res.status(500).json({
