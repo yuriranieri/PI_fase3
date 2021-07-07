@@ -68,14 +68,11 @@ class Question6 extends Component {
                                             <br />
                                             <h2>SUA RESPOSTA:</h2>
                                             <p id="resposta">{this.state.resposta_usuario}</p>
-                                            {/* {console.log(this.state.resposta_usuario)} */}
                                             <button id="submit" type="submit" disabled={this.state.disabled} >Avançar</button>
                                         </Form>
                                     </Container>
                                 </Jumbotron>
-
                             </Container>
-
                         </div>
                     ))}
                 </>

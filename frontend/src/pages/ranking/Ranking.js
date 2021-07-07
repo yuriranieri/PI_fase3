@@ -31,6 +31,44 @@ class Ranking extends React.Component {
             )
     }
 
+    handleChangeUser = event => {
+        const token = getToken()
+        const options = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        this.setState({
+            disabled_point: false,
+            disabled_user: true
+        })
+
+        fetch(`http://localhost:5000/ranking?orderBy=nome`, options)
+            .then(user =>
+                user.json().then(usuario => this.setState({ usuario }))
+            )
+    }
+
+    ordenarPontuacao = event => {
+        const token = getToken()
+        const options = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        this.setState({
+            disabled_point: true,
+            disabled_user: false
+        })
+
+        fetch(`http://localhost:5000/ranking?orderBy=pontuacao`, options)
+            .then(user =>
+                user.json().then(usuario => this.setState({ usuario }))
+            )
+    }
+
     render() {
         const { usuario } = this.state;
         console.log("backend retorna: ", usuario)
@@ -56,8 +94,9 @@ class Ranking extends React.Component {
                 </header>
                 <Container>
                     <h5>Ordenar por: &nbsp;
-                    <Button onclick={this.handleChangePoint} disabled={this.state.disabled_point}>Pontuação</Button>
+                    <Button onClick={this.ordenarPontuacao} disabled={this.state.disabled_point}>Pontuação</Button>
                     <Button onClick={this.handleChangeUser} disabled={this.state.disabled_user}>Usuário</Button>
+
                     </h5>
                     <Jumbotron className="jumbotron">
                             <Container>
@@ -87,45 +126,6 @@ class Ranking extends React.Component {
             </>
         )//fim do return
     }//fim do render
-
-    handleChangeUser = event => {
-        const token = getToken()
-        const options = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        }
-        this.setState({
-            disabled_point: false,
-            disabled_user: true
-        })
-
-        fetch(`http://localhost:5000/ranking?orderBy=nome`, options)
-            .then(user =>
-                user.json().then(usuario => this.setState({ usuario }))
-            )
-    }
-
-    // handleChangePoint = event => {
-    //     const token = getToken();
-    //     const options = {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': `Bearer ${token}`
-    //         }
-    //     }
-    //     this.setState({
-    //         disabled_point: true,
-    //         disabled_user: false
-    //     })
-        
-    //     fetch(`http://localhost:5000/ranking?orderBy=pontuacao`, options)
-    //         .then(user =>
-    //             user.json().then(usuario => this.setState({ usuario }))
-    //         )
-    // }
-
 }// fim da classe Ranking
 
 export default Ranking

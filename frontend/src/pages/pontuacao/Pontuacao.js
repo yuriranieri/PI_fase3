@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Button, Jumbotron, Container, Row, Col, } from 'reactstrap'
+import { Jumbotron, Container } from 'reactstrap'
 import logo from "../../img/logo.png"
 import { getToken } from '../../utils/auth'
 import './Pontuacao.css'
