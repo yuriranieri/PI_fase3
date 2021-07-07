@@ -30,12 +30,18 @@ class Question6 extends Component {
     }
 
     componentDidMount() {
-        fetch(`http://localhost:5000/questions`)
+        const token = getToken();
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        fetch(`http://localhost:5000/questions`, options)
             .then(question =>
                 question.json().then(question => this.setState({ question }))
             )
     }
-
 
     render() {
         const { redirect } = this.state
