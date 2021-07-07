@@ -48,9 +48,8 @@ router.get('/', async (req, res) => {
         }
         console.log('array de obj: ', newArr);
 
-        return res.json({
-            "questions": newArr
-        })
+        return res.json(newArr)
+        
     } catch (error) {
         console.log('ERROR:', error);
         return res.status(500).json({

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Table, Button, Jumbotron, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
 import './Ranking.css'
-import logo from "../img/logo.png"
-import { getToken } from '../utils/auth'
+import logo from "../../img/logo.png"
+import { getToken } from '../../utils/auth'
 
 class Ranking extends React.Component {
     constructor(props) {
@@ -22,8 +22,8 @@ class Ranking extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-
-        fetch(`http://localhost:5000/ranking?orderBy=pontuacao`, options)
+        
+        fetch(`http://localhost:5000/ranking?orderBy=nome`, options)
             .then(user =>
                 user.json().then(usuario => this.setState({ usuario }))
             )
@@ -48,7 +48,7 @@ class Ranking extends React.Component {
                         </Col>
                         <Col md="4">
                             <br />
-                            <Button className="jogar" color="warning" size="lg">Jogar</Button>
+                            <Button href="./question/1" className="jogar" color="warning" size="lg">Jogar</Button>
                         </Col>
                     </Row>
                 </header>

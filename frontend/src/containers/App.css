@@ -7,15 +7,21 @@ div#logo-login{
     text-align: center;
 }
 
-img#logo-registro{
-    width: 250px;
-
-}
-
 Label#txtCriar{
     font-size: 100px;
 }
 
 div#btnCriar{
     float: right;
+}
+
+h1, h2{
+    color: #017a11;
+    text-align: center;
+    text-shadow: 3px 3px #00ff0d;
+}
+
+.jumbotron{
+    background-color: #efbeff8e;
+    text-align: center;
 }
