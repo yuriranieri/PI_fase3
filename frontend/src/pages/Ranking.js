@@ -23,7 +23,7 @@ class Ranking extends React.Component {
             }
         }
 
-        fetch(`http://localhost:5000/ranking`, options)
+        fetch(`http://localhost:5000/ranking?orderBy=pontuacao`, options)
             .then(user =>
                 user.json().then(usuario => this.setState({ usuario }))
             )
@@ -69,8 +69,8 @@ class Ranking extends React.Component {
                                             {usuario.map((user, index) => {
                                         return (
                                         <tr>
-                                            <th key={index}>{index}</th>
-                                            <td>{user.usuario.login}</td>
+                                            <th key={index}>{index+1}</th>
+                                            <td>{user.usuario}</td>
                                             <td>{user.pontuacao}</td>
                                         </tr>
                                                 )
