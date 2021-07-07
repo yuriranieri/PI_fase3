@@ -1,15 +1,11 @@
-header{
+/* header{
     text-align: center;
-}
+} */
 
-header img{
+/* header img{
     width: 110px;
-}
+} */
 
-h1, h2{
-    text-align: center;
-    text-shadow: 2px 2px #860faa;
-}
 
 .fundo-questao{
     background-color: #dadadaa8;
@@ -17,7 +13,7 @@ h1, h2{
     text-align: center;
 }
 
-.btn{
+Button#btnResposta{
     margin-right: 50px;
     margin-bottom: 50px;
     padding: 30px;
@@ -32,6 +28,6 @@ p#resposta{
     text-shadow: 2px 2px #0e4600
 }
 
-button#submit{
+/* button#submit{
     margin-bottom: 50px;
-}
+} */

@@ -1,9 +1,9 @@
 import React from 'react'
 
 import {Switch, Route, Redirect, BrowserRouter } from 'react-router-dom'
-import Login from '../pages/Login'
-import Register from '../pages/Register'
-import Ranking from '../pages/Ranking'
+import Login from '../pages/login/Login.js'
+import Register from '../pages/login/Register.js'
+import Ranking from '../pages/ranking/Ranking.js'
 import Question1 from '../pages/questions/q1'
 import Question2 from '../pages/questions/q2'
 import Question3 from '../pages/questions/q3'
@@ -14,6 +14,7 @@ import Question7 from '../pages/questions/q7'
 import Question8 from '../pages/questions/q8'
 import Question9 from '../pages/questions/q9'
 import Question10 from '../pages/questions/q10'
+import Pontuacao from '../pages/pontuacao/Pontuacao.js'
 import NotFound from './NotFound'
 
 import { isAuth } from '../utils/auth'
@@ -44,6 +45,7 @@ const Routes = () => (
             <PrivateRoute path="/question/8" component={Question8} />
             <PrivateRoute path="/question/9" component={Question9} />
             <PrivateRoute path="/question/10" component={Question10} />
+            <PrivateRoute path="/pontuacao" component={Pontuacao} />
             <Route component={NotFound} />
         </Switch>
     </BrowserRouter>

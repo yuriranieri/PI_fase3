@@ -96,7 +96,6 @@ class Question1 extends Component {
                 }
                 return res.json()
             }).then(data => {
-                alert('deu certo')
                 this.setState({ redirect: true })
             }).catch(err => console.log(err))
 

@@ -1,8 +1,8 @@
 import React from 'react'
-import logo from "../img/logo.png"
+import logo from "../../img/logo.png"
 import { Button, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
-import api from '../services/api';
-import {loginf}  from '../utils/auth';
+import api from '../../services/api';
+import {loginf}  from '../../utils/auth';
 
 
 class Login extends React.Component {

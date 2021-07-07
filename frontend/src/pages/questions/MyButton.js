@@ -5,7 +5,7 @@ import './Questions.css'
 
 class MyButton extends Component {
     render() {
-        return <Button className="btn" color="warning"  onClick={() => { this.props.handleClick(this.props.label); }}>{this.props.label}</Button>
+        return <Button id="btnResposta" color="warning"  onClick={() => { this.props.handleClick(this.props.label); }}>{this.props.label}</Button>
     }
 }
 
