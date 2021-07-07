@@ -31,18 +31,10 @@ async handleSubmit(e) {
 
     const {login, password} = this.state
 
-    // console.log(login, password)
-
     try {
         const response = await api.post("/login", {login, password})
         const token = response.data.token
-        
         loginf(token)
-        console.log(loginf.TOKEN_KEY)
-
-
-        // console.log(response)
-        // console.log(response.data.token)
 
         if (response.status === 200) {
             this.props.history.push("/ranking");
@@ -61,7 +53,7 @@ render() {
                 <div id="logo-login">
                     <img src={logo}/>
                 </div>
-                <Form initialValues={{}} onSubmit={this.handleSubmit}>
+                <Form initialvalues={{}} onSubmit={this.handleSubmit}>
                     <FormGroup>
                         <Row>
                             <Col sm="12" md={{ size: 6, offset: 3 }}> 

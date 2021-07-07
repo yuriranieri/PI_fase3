@@ -2,6 +2,7 @@ import React from 'react'
 import { Table, Button, Jumbotron, Container, Row, Col, Label, Form, FormGroup, Input, } from 'reactstrap'
 import './Ranking.css'
 import logo from "../img/logo.png"
+import { getToken } from '../utils/auth'
 
 class Ranking extends React.Component {
     constructor(props) {
@@ -14,7 +15,15 @@ class Ranking extends React.Component {
     }
 
     componentDidMount() {
-        fetch(`http://localhost:5000/ranking`)
+        const token = getToken();
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }
+
+        fetch(`http://localhost:5000/ranking`, options)
             .then(user =>
                 user.json().then(usuario => this.setState({ usuario }))
             )
@@ -22,6 +31,7 @@ class Ranking extends React.Component {
 
     render() {
         const { usuario } = this.state;
+        console.log("backend retorna: ", usuario)
 
         return (
             <>
@@ -56,13 +66,15 @@ class Ranking extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            {usuario.map((user, index) => (
+                                            {usuario.map((user, index) => {
+                                        return (
                                         <tr>
                                             <th key={index}>{index}</th>
                                             <td>{user.usuario.login}</td>
                                             <td>{user.pontuacao}</td>
                                         </tr>
-                                            ))}
+                                                )
+                                        })}
                                     </tbody>
 
                                 </Table>
