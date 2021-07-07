@@ -69,14 +69,11 @@ class Question5 extends Component {
                                             <br />
                                             <h2>SUA RESPOSTA:</h2>
                                             <p id="resposta">{this.state.resposta_usuario}</p>
-                                            {/* {console.log(this.state.resposta_usuario)} */}
                                             <button id="submit" type="submit" disabled={this.state.disabled} >Avançar</button>
                                         </Form>
                                     </Container>
                                 </Jumbotron>
-
                             </Container>
-
                         </div>
                     ))}
                 </>
@@ -103,7 +100,6 @@ class Question5 extends Component {
                 }
                 return res.json()
             }).then(data => {
-                alert('deu certo')
                 this.setState({ redirect: true })
             }).catch(err => console.log(err))
 

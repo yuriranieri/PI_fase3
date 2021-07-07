@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Button, Jumbotron, Container, Row, Col, } from 'reactstrap'
+import { Jumbotron, Container } from 'reactstrap'
 import logo from "../../img/logo.png"
 import { getToken } from '../../utils/auth'
 import './Pontuacao.css'
@@ -34,13 +34,13 @@ class Pontuacao extends React.Component {
         return (
             <>
                 <Container>
-                    {/* <div > */}
-                        <img className="logo-pontuacao" id src={logo} />
-                    {/* </div> */}
                     <Jumbotron className="fundo-pontuacao">
                         <h1><br />Você finalizou as Questões</h1>
                         <h3>Pontuação:<br /> {pontuacao.pontuacao}</h3><br />
-                        <h4>Acertos:<br /> {pontuacao.acertos} / 10</h4><br />
+                        <h4>Acertos:<br /> {pontuacao.acertos} / 10</h4>
+                    <a href="./ranking">
+                        <img src={logo} />
+                    </a>
                         <p></p>
                     </Jumbotron>
                 </Container>
