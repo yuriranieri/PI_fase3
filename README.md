@@ -33,7 +33,7 @@ Este arquivo deve conter os seguintes dados:
 - DBUSER=`ex.: admin`
 - DBPASS=`ex.: admin`
 - DBNAME=`ex.: projeto`
-- SECRET=`ex.: projeto_secreto`
+- SECRET=`ex.: "projeto_secreto"`
 
 <br/> **Executar Frontend e Backend**
 
