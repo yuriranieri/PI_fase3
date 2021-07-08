@@ -51,7 +51,7 @@ router.get('/', async (req, res) => {
                 pontuacao: user.pontuacao
             }
 
-            console.log(obj)
+            // console.log(obj)
             arrObj.push(obj);
         })
 
@@ -76,7 +76,7 @@ router.get('/', async (req, res) => {
         if (req.query['orderBy'] == "pontuacao") {
             arrOrdenado = ordenByPontuacao(arrObj)
         }
-
+        console.log(arrOrdenado)
         return res.json(arrOrdenado)
     } catch (error) {
         console.log('ERROR:', error);
