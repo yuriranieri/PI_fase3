@@ -54,6 +54,7 @@ Para cancelar a execução, basta apertar `Ctrl+c` no terminal.
 * Cors
 * JWT
 * Bcrypt
+* Sequelize
 
 
 #### FRONTEND
@@ -66,7 +67,6 @@ Para cancelar a execução, basta apertar `Ctrl+c` no terminal.
 
 #### SGBD
 * MySQL
-* Sequelize
 * Dotenv
 
 ------------------------------------
